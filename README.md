@@ -250,4 +250,10 @@ Se v¯(A→C) = v¯(B→C) = v¯(A∨B) = 1 ENTÃO C
 2 possibilidades:
 * v¯(A) = 1 DAÍ 1 é verdadeira
 * v¯(B) = 1 DAÍ 2 é verdadeira
+Ambas concluem v(C) = 1
 
+--------------------------------------------
+### Teorema de Dedução
+
+
+12 exerc especificação
