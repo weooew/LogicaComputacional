@@ -136,15 +136,15 @@ se v(C) = 1 e v(N)= 0 então
 ----------------------------------------------
 ### Teorema da Definição Recursiva em Fórmulas
 v¯(¬A) = H¬(v(A))           = {1, se v¯(A)= 0
-                            0, caso contrário}
+                            0, caso contrário: v¯(A)= 1}
 v¯(A∧B) = H∧(v(A),v(B))     = {1, se v(A)= 1 E v(B) = 1
-                            0, caso contrário}
-v¯(A∨B) = H∨(v(A),v(B))     = {1, se v(A)= 1 OU v(B) = 1,se v(A)= 1 OU v(B) = 0,se v(A)= 0 OU v(B) = 1
-                            0, caso contrário}
+                            0, caso contrário: v(A)= 0 OU v(B) = 0}
+v¯(A∨B) = H∨(v(A),v(B))     = {1, se v(A)= 1 OU v(B) = 1
+                            0, caso contrário: v(A)= 0 E v(B) = 0}
 v¯(A->B) = H->(v(A),v(B))   = {1, se v(A)= 0 OU v(B) = 1  ps:01,00,11???
-                            0, caso contrário}
+                            0, caso contrário: v(A)= 1 E v(B) = 0}
 v¯(A<->B) = H<->(v(A),v(B)) = {1, se v(A)= v(B)
-                            0, caso contrário}
+                            0, caso contrário: v(A) != v(B)}
                             
 ### Satisfatibilidade e Validade
 De todas as possíveis valorações... 
@@ -253,7 +253,283 @@ Se v¯(A→C) = v¯(B→C) = v¯(A∨B) = 1 ENTÃO C
 Ambas concluem v(C) = 1
 
 --------------------------------------------
-### Teorema de Dedução
+### Teorema de Dedução (Γ,φ ⊨ ψ ⟺ Γ ⊨ φ→ψ)
+
+Demostração de: Γ,φ ⊨ ψ 
+1. (v(Γ) = 1, v(φ) = 1) ENTÃO v(ψ) = 1  (DEFINIÇÃO)
+Suponha a contradição Γ ⊭ φ→ψ:
+2. v1(Γ) = 1 
+3. v1(φ→ψ) = 0: v1(φ) = 1 E v1(ψ) = 0
+Porém, colocando os valores da equação 1 na expressão v1(φ→ψ)=1 
+
+Demonstração de Γ ⊨ φ→ψ
+1. se v¯(Γ)=1 ENTÃO v¯(φ→ψ)=1  (DEFINIÇÃO)
+Suponha a contradição Γ,φ ⊭ ψ:
+2. v¯1(Γ)= 1
+3. v¯1(φ) = 1
+4. v¯1(ψ) = 0
+Com a equação 1 em equação (então v¯1(φ→ψ)=1), porém 3 e 4 daria v¯1(φ→ψ)=0  
+
+EXEMPLO:
+Γ={A→B,B→C}, φ=A e ψ=C
+A->B, B->C, A ⊨ C   <==>   A->B, B->C ⊨ A->C 
+
+EXERCÍCIOS:
+⊨(A→B)↔(¬A∨B)
+1.v1(A→B) = 0 ↔ v1(A)=1 E V(B)=0
+                 v1(¬A)=0 OU v1(B)=0 
+                 v1(¬A∨B) = 0
+2. v2(A→B) = 1 ↔ v2(A)= 0 OU v2(B)=1
+                  v2(¬A)=1 OU v2(B)=1
+                  v2(¬A∨B) = 1 
+--------------------------------------
+¬A∨B ⊨ A→¬B
+1. v(¬A∨B) = 1 ↔ v(¬A)=0 OU v(B)=1    11, 01, 00
+                 v(A)=1 OU v(B)=1    
+                 v(A)=1 OU v(¬B)=0   (possibilidades 10, 11, 00)   
+                 PODE DAR v(A->¬B)=0
+???????????????????????????????????????????????????????????????????????????????
+⊨(A∨B)↔(¬A→B)
+1. v(A∨B) = 0 <-> v(A) = 0 E v(B) = 0
+                  v(¬A) = 1 E v(B) = 0
+                  v(¬A→B) = 0 
+2. v(A∨B) = 1 <-> v(A) = 1 OU v(B) = 1
+                  v(¬A) = 0 OU v(B) = 1
+                  v(¬A→B) = 1 
+                  
+--------------------------------------------------
+¬A→B ⊨B→A
+1. ¬A→B 
+--------------------------------------------------
+⊨A→(B→A)
+--------------------------------------------------
+⊨(A∨(B∧C))↔((A∨B)∧(A∨C))
+--------------------------------------------------
+⊨(A∧(B∨C))↔((A∧B)∨(A∧C))
+--------------------------------------------------
+{A∨D,A→C,B→C}⊨C
+--------------------------------------------------
+{A∨B,¬B}⊨A
+--------------------------------------------------
+{A∨B,¬B,¬A→C}⊨C
+--------------------------------------------------
+{A∨B,¬B}⊨A⟺{A∨B}⊨(¬B→A)
+--------------------------------------------------
+Prove, utilizando teorema de dedução:
+{A∨B,¬B}⊨A⟺⊨(A∨B)→(¬B→A)
+--------------------------------------------------
+{A∨B}⊨¬B→A⟺⊨¬B→((A∨B)→A)
+--------------------------------------------------
+{A∨B}⊨A→B⟺⊨A→((A∨B)→B)
+--------------------------------------------------
+{A∨B,A→C,B→C}⊨C⟺B→C⊨(A∨B)→((A→C)→C)
+--------------------------------------------------
+Γ,φ⊨¬ψ, então Γ,ψ⊨¬(ψ→φ)
+--------------------------------------------------
+Γ,ψ⊨¬(ψ→φ), então Γ,φ⊨¬ψ Γ⊨¬φ∨ψ, então Γ,¬ψ⊨φ
+--------------------------------------------------
+ Γ⊨¬φ∨ψ, então Γ,¬ψ⊨φ
+--------------------------------------------------
+Γ,¬ψ⊨φ, então Γ⊨¬φ∨ψ
+--------------------------------------------------
+## Dedução Natural do estilo de Filtch
+Regras de dedução natural:
+premisas depois...
+  *conjução: ∧i m,n {m. A
+                     n. B
+                     l. A∧B ∧i m,n}
+             ∧e m   {m. A∧B 
+                     n. A ∧e m}
+  *condicional: ->i m,n {m. A
+                         n. B
+                         l. A->B ->i m,n}
+OBS: Para concluir A → B, a “caixa” deve iniciar com a hipótese A e terminar com a
+dedução B;
+                ->e m,n {m. A->B 
+                         n. A
+                         l. B ->e m,n}
+  *disjunção: ∨i m {m. A        |m.B  
+                    n. A∨B ∨i m |n.A∨B ∨i m}
+              ∨e m,(m+1)-n, (n+1)-p  {m. A∨B  
+                                       {m+1. A hip
+                                       n.C}
+                                       {n+1. B hip
+                                        p.C}
+                                     p+1. C ∨e m,(m+1)-n, (n+1)-p}
+  *negação: ¬i m-n {  {m.A hip   "Hipotese dá absurdo, logo provo sua contradição"
+                      n.⊥}
+                    p.¬A ¬i m-n}
+            ¬e m,n{m.A           "Dar o absurdo(contradição: ⊥)"
+                   n.¬A
+                   p.⊥ ¬e m,n}
+  *contradição: ⊥e m {m. ⊥    "Quando chego a uma contradição posso dizer uma fórmula qualquer"
+                      n. A ⊥e m} 
+  ⊨ A -> (~A->B)
+1. {A hip
+2.    {~A hip
+3.      ⊥ ¬e 1,2
+4.      B ⊥e}
+5.  ~A->B ->i 2-4}
+6. A -> (~A->B) ->i 1-5                     
+                
+  *copie: {m.A
+           n. A copie m}
+  *redução ao absurdo: raa m-n {   {m. ¬A hip  "Coloque ~(fórmula) para provar absurdo disso+verd da fórmula"
+                                   n. ⊥}
+                                n+1. A raa m-n}
 
 
-12 exerc especificação
+QUESTÃO1---------------------------------------------
+#|- (A|(A&B))->A
+1.{ A|(A&B) hip
+2.  {A hip}
+3.  {A&B hip
+4.   A &e 3}
+5. A |e 1, 2-2, 3-4}
+6. A|(A&B) -> A ->i 1-5
+QUESTÃO2---------------------------------------------
+#|- A&(A|B)->A
+1. {A&(A|B) hip
+2. A &e 1}
+3. A&(A|B)-> A ->i 1-2
+QUESTÃO3---------------------------------------------
+#|- (A->(B->C)) -> (B->(A->C))
+1.   {A->(B->C) hip
+2.      {B hip
+3.         {A hip
+4.          B->C ->e 1,3
+5.          C ->e 4,2}
+6.       A->C ->i 3-5}
+7.    B->(A->C) ->i 2-6}
+8. (A->(B->C)) -> (B->(A->C)) ->i 1-7
+QUESTÃO4---------------------------------------------
+#|- (A->(A->B)) -> (A->B)
+1. {(A->(A->B)) hip
+2.      {A hip
+3.       A->B ->e 2,1
+4.       B  ->e 3,2}
+5.  A->B ->i 2-4}     
+6. (A->(A->B)) -> (A->B) ->i 1-5
+QUESTÃO5---------------------------------------------
+#|- (~A->B)->((~A->~B)->A)
+1. {(~A->B) hip
+2. {A hip}
+6.  } 
+7. }
+QUESTÃO6------------------------------------------
+⊨ A∨¬A
+1.  {¬(A∨¬A) hip
+2.    {¬A hip
+3.     A∨¬A ∨i 2
+4.     ⊥ ¬e 3,1}
+5.  A raa 2-4
+6.  A∨¬A ∨i 5
+7.  ⊥ ¬e 6,1}
+8. A∨¬A raa 1-7
+QUESTÃO7--------------------------------------
+|- (A->B)|(B->A)
+PROVE UM LADO OU O OUTRO
+1.{~(A->B) hip
+2.     {A hip
+3.      B ->e 1,2}
+4. A->B ->i 2-3
+5. @ e 1,4}
+6. (A->B) ~i 1-5
+7. (A->B)|(B->A) |i 6
+-??????????????????????????????????????????
+---------------------
+
+QUESTÃO10---------------------------------
+A&B->C |- B->(A->C)
+1. A&B->C pre
+2.  {B hip 
+3.   {A hip 
+4.    A&B &i 2,3
+5.    C ->e 1,4}
+6.   A->C ->i 3-5}
+7. B->(A->C) ->i 2-6
+
+QUESTÃO13---------------------------------------------
+#|- (A->(B->A))
+
+QUESTÃO15----------------------------
+A->C, A|B, B->C |- C 
+1. A->C pre 
+2. A|B pre 
+3. B->C pre
+4. {A hip
+5.  C ->e 1,4}
+6. {B hip
+7. C ->e 3,6}
+8. C |e 2,4-5, 6-7
+
+QUESTÃO20------------------------
+ # A->B |- ~B->~A 
+1. A->B 		pre
+2. {	~B		hip
+3.	 { 	A	hip
+4.	  	B	->e 1,3
+5.		  @	~e 2,4}
+6.	~A 		~i 3-5}
+7. ~B->~A		->i 2-6		
+???????????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+QUESTÃO24-----------------------------~
+~A|~B |- ~(A&B)
+1. ~A|~B pre
+2. {A & B hip
+3.    {~A hip
+4.    A &e 2
+5.    @ ~e 3,4}
+6.    {~B hip
+7.    B &e 2
+8.    @ ~e 6,7}
+9. @ |e 1, 3-5,6-8}
+10. ~(A&B) ~i 2-9
+
+QUESTÃO26---------------------------------------------
+(A|B)&(A|C) |- A|(B&C)
+
+
+
+QUESTÃO30-----------------------
+A|B |-A->B
+1. A|B 
+2.{A hip
+3.   {~A hip
+4.    @
+5.    B}
+6.  {B
+7.B}
+8. A->B
+
+QUESTÃO33-------------------------
+# ~(A->~B) |- A&B
+1.~(A->~B) pre
+2.{~(A&B) hip
+3.   {A hip
+4.      {B hip
+5.      A&B &i 3,4
+6.      @ ~e 2,5} 
+7.   ~B ~i 4-6}
+8.  A->~B ->i 3-7
+9.  @ ~e 1,8}
+10.  A&B raa 2-9
+
+QUESTÃO41------------------------------------------
+~A|B |- A->B
+1.~A|B pre
+2.{ A hip
+3.  { ~A hip
+4.    @ ~e 2,3
+5.    B @e 4}
+6.  {B hip}
+7. B |e 1,3-5,6-6}
+8. A->B ->i 2-7
+
+----------------------------------------------------
+B |- A->B
+1. B pre
+2.{ A hip
+3.  B copie 1}
+4.  A->B ->i 2-3
